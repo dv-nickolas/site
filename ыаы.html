@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Камилла Исаева</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #E91E63;
+  --primary-light: #FDF2F8;
+  --text: #222;
+  --bg: #fff;
+  --card-bg: #fff;
+  --light-gray: #f9f9f9;
+  --text-light: #555;
+  --shadow: rgba(0,0,0,0.08);
+}
+[data-theme="dark"] {
+  --primary: #FF6090;
+  --primary-light: #2d0b1e;
+  --text: #f0f0f0;
+  --bg: #0f0a0c;
+  --card-bg: #1a1115;
+  --light-gray: #1a1115;
+  --text-light: #ccc;
+  --shadow: rgba(0,0,0,0.4);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); line-height:1.8; overflow-x:hidden; transition:background .4s,color .4s; }
+
+/* КРАСИВЕЙШИЙ ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ — СОЛНЦЕ БЕЗ КРУГА */
+#themeToggle {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: 1001;
+  width: 52px;
+  height: 52px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 25px rgba(233,30,99,0.3);
+  transition: all 0.4s ease;
+  overflow: hidden;
+  border: 2px solid rgba(233,30,99,0.15);
+}
+#themeToggle:hover {
+  transform: scale(1.15);
+  box-shadow: 0 12px 40px rgba(233,30,99,0.4);
+}
+#themeToggle svg {
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#themeToggle .sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+  stroke: var(--primary);
+  fill: none;
+}
+#themeToggle .moon {
+  opacity: 0;
+  transform: rotate(120deg) scale(0.8);
+  fill: var(--primary);
+}
+[data-theme="dark"] #themeToggle .sun { opacity: 0; transform: rotate(-120deg) scale(0.8); }
+[data-theme="dark"] #themeToggle .moon { opacity: 1; transform: rotate(0deg) scale(1); }
+#themeToggle.spin svg { animation: spin 0.9s ease-in-out; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* ХЕДЕР */
+header {
+  position: fixed; top:0; left:0; right:0; height:76px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; background: transparent; transition: all .4s; z-index: 1000;
+}
+header.scrolled {
+  background: rgba(255,255,255,0.96); backdrop-filter: blur(12px);
+  box-shadow: 0 4px 25px rgba(233,30,99,0.12); height: 68px;
+}
+[data-theme="dark"] header.scrolled { background: rgba(20,15,18,0.96); }
+.logo-img { width:48px; height:48px; border-radius:50%; object-fit:cover;
+  border: 3px solid #fff; box-shadow: 0 4px 15px rgba(233,30,99,0.3); transition: border-color .4s; }
+header.scrolled .logo-img { border-color: var(--primary); }
+nav a { color:#fff; text-decoration:none; margin-left:28px; font-weight:500; font-size:15px;
+  position:relative; transition:color .4s; }
+header.scrolled nav a { color:#333; }
+[data-theme="dark"] header.scrolled nav a { color:#eee; }
+nav a::after { content:''; position:absolute; bottom:-bottom:6px; left:0; width:0; height:2px;
+  background: var(--primary); transition: width .4s; }
+nav a:hover::after, nav a.active::after { width:100%; }
+nav a.active { color: var(--primary); }
+
+/* Остальные стили (как у тебя было) */
+.hero { height:100vh; min-height:680px; display:flex; align-items:center; justify-content:center; text-align:center;
+  background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.65)), url('https://i.ibb.co/W4z6W6mh/photo-2025-11-27-06-49-53.jpg') center/cover no-repeat fixed; }
+.hero h1 { font-family:'Playfair Display',serif; font-size:78px; color:#fff; margin-bottom:8px; text-shadow:0 4px 16px rgba(0,0,0,0.7); }
+.container { max-width:1200px; margin:0 auto; padding:0 24px; }
+section { padding:120px 0; opacity:0; transform:translateY(40px); transition:all 1s; }
+section.visible { opacity:1; transform:none; }
+
+/* Карточки мотивации */
+.motivation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 48px; max-width: 1350px; margin: 0 auto; }
+.m-card { background: var(--card-bg); border-radius: 36px; padding: 56px 44px; text-align: center; box-shadow: 0 25px 60px var(--shadow); transition: all 0.4s ease; height: 100%; display: flex; flex-direction: column; align-items: center; }
+.m-card:hover { transform: translateY(-20px); box-shadow: 0 35px 80px rgba(233,30,99,0.3); }
+.m-icon { width: 100px; height: 100px; background: var(--primary); border-radius: 28px; display: flex; align-items: center; justify-content: center; margin-bottom: 32px; flex-shrink: 0; }
+.m-icon img { width: 52px; height: 52px; filter: brightness(0) invert(1); }
+.m-title { font-size: 24px; font-weight: 700; margin-bottom: 20px; color: #222 !important; transition: color 0.4s ease; }
+[data-theme="dark"] .m-title { color: #ffffff !important; }
+.m-card p { font-size: 17px; color: var(--text-light); line-height: 1.8; flex-grow: 1; }
+[data-theme="dark"] .m-card p { color: #ddd; }
+
+@media (max-width: 768px) {
+  .motivation-grid { grid-template-columns: 1fr; }
+  .m-card { padding: 48px 32px; }
+}
+</style>
+</head>
+<body data-theme="light">
+
+<!-- КРАСИВЫЙ ПЕРЕКЛЮЧАТЕЛЬ СОЛНЦЕ ↔ ЛУНА -->
+<div class="theme-toggle" id="themeToggle">
+  <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5"/>
+    <line x1="12" y1="1" x2="12" y2="3"/>
+    <line x1="12" y1="21" x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1" y1="12" x2="3" y2="12"/>
+    <line x1="21" y1="12" x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </svg>
+  <svg class="moon" viewBox="0 0 24 24">
+    <path d="M21 12.75A8.25 8.25 0 0112.75 21 8.25 8.25 0 013 12.75 8.25 8.25 0 0112.75 3a.75.75 0 01.75.75v.75a7.5 7.5 0 000 14.25v.75a.75.75 0 01-.75.75z"/>
+  </svg>
+</div>
+
+<header>
+  <img src="https://i.ibb.co/2YHxwdK5/photo-2025-11-27-09-08-15.jpg" alt="Камилла" class="logo-img">
+  <nav>
+    <a href="#home" class="active">Главная</a>
+    <a href="#about">Обо мне</a>
+    <a href="#motivation">Мотивация</a>
+    <a href="#experience">Опыт в Студсовете</a>
+    <a href="#values">Ценности</a>
+    <a href="#contact">Связь</a>
+  </nav>
+</header>
+
+<!-- Весь твой остальной контент (hero, about, motivation, experience, values, contact) оставляешь как есть -->
+<!-- Пример hero секции: -->
+<section class="hero" id="home">
+  <div class="container">
+    <h1>Камилла<br>Исаева</h1>
+    <p>Студентка ВШБ НИУ ВШЭ • 1 курс «Управление бизнесом»</p>
+    <div class="greeting">
+      <img src="https://i.ibb.co/2YHxwdK5/photo-2025-11-27-09-08-15.jpg" alt="Камилла">
+      <p>Привет! Рада видеть тебя здесь</p>
+    </div>
+  </div>
+</section>
+
+<!-- Вставляй сюда все свои секции как раньше (about, motivation, experience и т.д.) -->
+
+<footer style="background:#111; color:#ccc; text-align:center; padding:50px 20px;">
+  <div class="container">2025 Камилла Исаева • ОП «Управление бизнесом» • БМБ2505</div>
+</footer>
+
+<script>
+// Переключение темы с анимацией
+document.getElementById('themeToggle').addEventListener('click', function() {
+  this.classList.add('spin');
+  setTimeout(() => this.classList.remove('spin'), 900);
+  document.body.dataset.theme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+});
+
+// Активное меню + скролл хедера
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a');
+window.addEventListener('scroll', () => {
+  let current = 'home';
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 120;
+    if (scrollY >= sectionTop) current = section.getAttribute('id');
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
+  });
+  document.querySelector('header').classList.toggle('scrolled', scrollY > 50);
+});
+
+// Анимация появления секций
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('section').forEach(sec => observer.observe(sec));
+</script>
+</body>
+</html>
